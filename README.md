@@ -765,3 +765,11 @@ This project is for portfolio demonstration purposes only. All rights reserved.
 ---
 
 **Note**: This is a portfolio project demonstrating technical capabilities. The codebase showcases modern development practices, cloud architecture, and full-stack engineering skills.
+
+<img width="2559" height="1321" alt="1" src="https://github.com/user-attachments/assets/9a224854-d157-48c7-bab9-8cef619b50d8" />
+<img width="1317" height="572" alt="2" src="https://github.com/user-attachments/assets/a984c878-fdda-48e3-80dd-0f070b633cd1" />
+<img width="1456" height="1108" alt="3" src="https://github.com/user-attachments/assets/1c56d1d5-c176-4213-b8ad-62aacc0f6930" />
+<img width="2559" height="1318" alt="4" src="https://github.com/user-attachments/assets/25355584-debb-4379-bb67-3b660d6277f1" />
+<img width="2560" height="1130" alt="5" src="https://github.com/user-attachments/assets/d3d85ea6-de4f-49ec-8e8d-a7f2c4f40e9f" />
+<img width="2560" height="1085" alt="6" src="https://github.com/user-attachments/assets/c3e61fd8-186a-4223-9c43-b196738718e6" />
+<img width="2558" height="1318" alt="7" src="https://github.com/user-attachments/assets/c02f1c32-d18a-4553-8d10-a21e8a4d5f79" />
