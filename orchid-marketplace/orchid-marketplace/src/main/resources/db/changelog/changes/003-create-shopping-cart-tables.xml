@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="003-create-shopping-cart-tables" author="system">
+        
+        <!-- Create shopping_carts table -->
+        <createTable tableName="shopping_carts">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subtotal" type="DECIMAL(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tax" type="DECIMAL(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="shipping_cost" type="DECIMAL(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total" type="DECIMAL(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_updated" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deleted_at" type="TIMESTAMP"/>
+        </createTable>
+        
+        <!-- Add foreign key to users table -->
+        <addForeignKeyConstraint
+            baseTableName="shopping_carts"
+            baseColumnNames="user_id"
+            constraintName="fk_shopping_carts_user"
+            referencedTableName="users"
+            referencedColumnNames="id"
+            onDelete="CASCADE"/>
+        
+        <!-- Add unique constraint - one cart per user -->
+        <addUniqueConstraint
+            tableName="shopping_carts"
+            columnNames="user_id"
+            constraintName="uk_shopping_carts_user"/>
+        
+        <!-- Create index on user_id for fast lookups -->
+        <createIndex indexName="idx_shopping_carts_user_id" tableName="shopping_carts">
+            <column name="user_id"/>
+        </createIndex>
+        
+        <!-- Create cart_items table -->
+        <createTable tableName="cart_items">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="cart_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="unit_price" type="DECIMAL(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="line_total" type="DECIMAL(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="shipping_option_id" type="UUID"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deleted_at" type="TIMESTAMP"/>
+        </createTable>
+        
+        <!-- Add foreign key to shopping_carts table -->
+        <addForeignKeyConstraint
+            baseTableName="cart_items"
+            baseColumnNames="cart_id"
+            constraintName="fk_cart_items_cart"
+            referencedTableName="shopping_carts"
+            referencedColumnNames="id"
+            onDelete="CASCADE"/>
+        
+        <!-- Add foreign key to products table -->
+        <addForeignKeyConstraint
+            baseTableName="cart_items"
+            baseColumnNames="product_id"
+            constraintName="fk_cart_items_product"
+            referencedTableName="products"
+            referencedColumnNames="id"
+            onDelete="CASCADE"/>
+        
+        <!-- Add foreign key to shipping_options table -->
+        <addForeignKeyConstraint
+            baseTableName="cart_items"
+            baseColumnNames="shipping_option_id"
+            constraintName="fk_cart_items_shipping_option"
+            referencedTableName="shipping_options"
+            referencedColumnNames="id"
+            onDelete="SET NULL"/>
+        
+        <!-- Add unique constraint - one product per cart -->
+        <addUniqueConstraint
+            tableName="cart_items"
+            columnNames="cart_id,product_id"
+            constraintName="uk_cart_items_cart_product"/>
+        
+        <!-- Create index on cart_id for fast lookups -->
+        <createIndex indexName="idx_cart_items_cart_id" tableName="cart_items">
+            <column name="cart_id"/>
+        </createIndex>
+        
+        <!-- Create index on product_id for fast lookups -->
+        <createIndex indexName="idx_cart_items_product_id" tableName="cart_items">
+            <column name="product_id"/>
+        </createIndex>
+        
+    </changeSet>
+    
+</databaseChangeLog>

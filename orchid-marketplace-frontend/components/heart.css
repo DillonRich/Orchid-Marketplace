@@ -1,0 +1,49 @@
+/* Converted styles from heart.md to simple, scoped CSS used by Heart.tsx */
+.heart-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  background: rgba(255,255,255,0.92);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  padding: 4px;
+  cursor: pointer;
+  transition: transform 120ms ease, background 120ms ease;
+}
+.heart-btn:active { transform: scale(0.97); }
+
+.heart-svg { width: 20px; height: 20px; display: block; }
+.heart-empty path { stroke: #4A5D48; fill: none; stroke-width: 18px; }
+.heart-filled path { fill: #FF5353; stroke-width: 0; }
+
+@keyframes like_effect {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+.heart-anim { animation: like_effect 420ms ease; transform-origin: center; }
+
+/* Simple expanding pulse for small burst effect */
+.heart-pulse {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  transform: translate(-50%, -50%);
+  border-radius: 9999px;
+  background: rgba(255,83,83,0.22);
+  animation: pulse 420ms ease-out forwards;
+}
+
+@keyframes pulse {
+  0% { transform: translate(-50%, -50%) scale(0.2); opacity: 0.9; }
+  60% { transform: translate(-50%, -50%) scale(1.6); opacity: 0.5; }
+  100% { transform: translate(-50%, -50%) scale(2.6); opacity: 0; }
+}
+
+/* Make sure the SVG stays on top of pulse */
+.heart-btn .heart-svg { position: relative; z-index: 2; }

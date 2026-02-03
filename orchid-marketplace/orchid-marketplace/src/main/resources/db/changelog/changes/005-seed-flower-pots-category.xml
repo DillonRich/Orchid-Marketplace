@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="001-seed-flower-pots-category" author="orchid-team" context="!production">
+        <comment>Insert Flower Pots category for development testing</comment>
+        <insert tableName="categories">
+            <column name="id" value="550e8400-e29b-41d4-a716-446655440000"/>
+            <column name="name" value="flower-pots"/>
+            <column name="display_name" value="Flower Pots"/>
+            <column name="description" value="Beautiful decorative pots to complement your orchids and plants"/>
+            <column name="icon_class" value="🪴"/>
+            <column name="display_order" value="1"/>
+            <column name="created_at" value="2026-01-09 12:00:00"/>
+            <column name="updated_at" value="2026-01-09 12:00:00"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

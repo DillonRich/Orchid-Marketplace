@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet id="004-create-messaging-tables" author="orchid-team">
+        <comment>Create conversations and messages tables for buyer-seller communication with fraud prevention</comment>
+
+        <!-- Conversations table -->
+        <createTable tableName="conversations">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="buyer_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="seller_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="order_id" type="uuid">
+                <constraints/>
+            </column>
+            <column name="last_message_at" type="timestamp"/>
+            <column name="is_archived" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deleted_at" type="timestamp"/>
+        </createTable>
+
+        <!-- Conversations indexes -->
+        <createIndex indexName="idx_conversations_buyer_id" tableName="conversations">
+            <column name="buyer_id"/>
+        </createIndex>
+        <createIndex indexName="idx_conversations_seller_id" tableName="conversations">
+            <column name="seller_id"/>
+        </createIndex>
+        <createIndex indexName="idx_conversations_order_id" tableName="conversations">
+            <column name="order_id"/>
+        </createIndex>
+        <createIndex indexName="idx_conversations_last_message_at" tableName="conversations">
+            <column name="last_message_at"/>
+        </createIndex>
+
+        <!-- Messages table -->
+        <createTable tableName="messages">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="conversation_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sender_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="has_flagged_keywords" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="flagged_keywords" type="text"/>
+            <column name="is_read" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="read_at" type="timestamp"/>
+            <column name="created_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deleted_at" type="timestamp"/>
+        </createTable>
+        <!-- Foreign key constraints -->
+        <addForeignKeyConstraint
+            baseTableName="conversations"
+            baseColumnNames="buyer_id"
+            constraintName="fk_conversations_buyer"
+            referencedTableName="users"
+            referencedColumnNames="id"
+            onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+            baseTableName="conversations"
+            baseColumnNames="seller_id"
+            constraintName="fk_conversations_seller"
+            referencedTableName="users"
+            referencedColumnNames="id"
+            onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+            baseTableName="conversations"
+            baseColumnNames="order_id"
+            constraintName="fk_conversations_order"
+            referencedTableName="orders"
+            referencedColumnNames="id"
+            onDelete="SET NULL"/>
+
+        <addForeignKeyConstraint
+            baseTableName="messages"
+            baseColumnNames="conversation_id"
+            constraintName="fk_messages_conversation"
+            referencedTableName="conversations"
+            referencedColumnNames="id"
+            onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+            baseTableName="messages"
+            baseColumnNames="sender_id"
+            constraintName="fk_messages_sender"
+            referencedTableName="users"
+            referencedColumnNames="id"
+            onDelete="CASCADE"/>
+        <!-- Messages indexes -->
+        <createIndex indexName="idx_messages_conversation_id" tableName="messages">
+            <column name="conversation_id"/>
+        </createIndex>
+        <createIndex indexName="idx_messages_sender_id" tableName="messages">
+            <column name="sender_id"/>
+        </createIndex>
+        <createIndex indexName="idx_messages_has_flagged_keywords" tableName="messages">
+            <column name="has_flagged_keywords"/>
+        </createIndex>
+        <createIndex indexName="idx_messages_is_read" tableName="messages">
+            <column name="is_read"/>
+        </createIndex>
+        <createIndex indexName="idx_messages_created_at" tableName="messages">
+            <column name="created_at"/>
+        </createIndex>
+
+    </changeSet>
+
+</databaseChangeLog>
